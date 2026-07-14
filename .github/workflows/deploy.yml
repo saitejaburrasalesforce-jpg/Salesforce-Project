@@ -27,7 +27,7 @@ jobs:
           echo "${{ secrets.SFDX_AUTH_URL }}" > authfile.txt
           sf org login sfdx-url \
             --sfdx-url-file authfile.txt \
-            --alias DevHub \
+            --alias SFDCinteviewPrep \
             --set-default
 
       - name: Validate Deployment
