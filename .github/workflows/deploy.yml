@@ -38,7 +38,4 @@ jobs:
 
       - name: Deploy Metadata
         run: |
-          sf project deploy start \
-            --source-dir force-app \
-            --target-org DevHub \
-            --wait 30
+          sf project deploy start --target-org SFDCinteviewPrep --wait 30
