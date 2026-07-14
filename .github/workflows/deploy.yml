@@ -10,19 +10,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Install Salesforce CLI
-        run: |
-          npm install -g @salesforce/cli
+        run: npm install -g @salesforce/cli
 
-      - name: Verify CLI Installation
-        run: |
-          sf --version
+      - name: Verify CLI
+        run: sf --version
 
-      - name: Authenticate to Salesforce
+      - name: Authenticate
         run: |
           echo "${{ secrets.SFDX_AUTH_URL }}" > authfile.txt
           sf org login sfdx-url \
@@ -30,12 +26,25 @@ jobs:
             --alias SFDCinteviewPrep \
             --set-default
 
+      - name: List Authenticated Orgs
+        run: sf org list
+
+      - name: Verify Project
+        run: |
+          pwd
+          ls -la
+          ls force-app
+          cat sfdx-project.json
+
       - name: Validate Deployment
         run: |
           sf project deploy validate \
             --source-dir force-app \
-            --target-org DevHub
+            --target-org SFDCinteviewPrep
 
-      - name: Deploy Metadata
+      - name: Deploy
         run: |
-          sf project deploy start --target-org SFDCinteviewPrep --wait 30
+          sf project deploy start \
+            --source-dir force-app \
+            --target-org SFDCinteviewPrep \
+            --wait 30
